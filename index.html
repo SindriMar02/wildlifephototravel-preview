@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Wildlife Photo Travel | Photo expeditions in the heart of the wilderness</title>
+<meta name="description" content="Concept redesign. Arctic fox photo workshops in Hornstrandir, red deer in Scotland and Tassili n'Ajjer in Algeria. Small groups, professional wildlife and landscape photographers.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
+<link rel="apple-touch-icon" href="assets/favicon-256.png">
+<link rel="preload" href="fonts/Switzer-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/DMMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('wpt-js');</script>
+<style>
+/* ============ WILDLIFE PHOTO TRAVEL — concept redesign ============
+   Reference: produx.design (Awwwards SOTD 2026-08-09).
+   Devices and eases extracted from its shipped Next.js chunks; composition
+   matched against real screen captures at 9 scroll depths.
+   Ground colours sampled from the CLIENT's own frames.
+   Prefix: wpt-  */
+
+@font-face{font-family:'Switzer';src:url('fonts/Switzer-Variable.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'DM Mono';src:url('fonts/DMMono-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+
+:root{
+  --wpt-ink:#141414;          /* reference base ground */
+  --wpt-paper:#F2F2F2;        /* reference ink */
+  /* section grounds, sampled from their photographs */
+  --wpt-g-tundra:#2C3320;     /* fox tundra green */
+  --wpt-g-moss:#6B6A55;       /* moorland taupe (the light band) */
+  --wpt-lichen:#C0D17A;       /* accent: tundra bokeh behind the fox cub */
+  --wpt-display:'Switzer',Helvetica,Arial,sans-serif;
+  --wpt-mono:'DM Mono',ui-monospace,monospace;
+  --wpt-ground:#141414;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:#141414;color-scheme:dark}
+body{background:var(--wpt-ground);color:var(--wpt-paper);font-family:var(--wpt-display);
+  font-weight:300;-webkit-font-smoothing:antialiased;transition:background-color .9s cubic-bezier(.1,.4,.15,1)}
+.wpt-js body.wpt-lock{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--wpt-lichen);outline-offset:3px}
+
+/* ---------- type ---------- */
+.wpt-mono{font-family:var(--wpt-mono);font-size:12px;line-height:1.55;letter-spacing:.02em}
+.wpt-mono-caps{font-family:var(--wpt-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+/* the reference's statement register: LIGHT weight, sentence case, generous */
+.wpt-say{font-family:var(--wpt-display);font-weight:300;letter-spacing:-.022em;line-height:1.12;
+  font-size:clamp(26px,3.5vw,50px)}
+.wpt-huge{font-family:var(--wpt-display);font-weight:200;letter-spacing:-.03em;line-height:.86;
+  font-size:clamp(52px,13.2vw,200px);white-space:nowrap}
+.wpt-sec-title{font-family:var(--wpt-display);font-weight:300;letter-spacing:-.03em;line-height:.9;
+  font-size:clamp(40px,8.4vw,126px)}
+
+/* ---------- shell ---------- */
+.wpt-sec{padding:clamp(64px,9vw,150px) clamp(20px,3.4vw,54px);position:relative}
+.wpt-wrap{max-width:1600px;margin:0 auto}
+
+/* ---------- cursor ---------- */
+.wpt-cursor{position:fixed;top:0;left:0;z-index:1200;pointer-events:none;display:none}
+@media (hover:hover) and (pointer:fine){.wpt-js .wpt-cursor{display:block}}
+.wpt-cursor i{display:block;width:62px;height:62px;border-radius:50%;border:1px solid var(--wpt-lichen);
+  transform:translate(-50%,-50%) scale(.22);transition:transform .4s cubic-bezier(.1,.4,.15,1);
+  display:grid;place-items:center;font-style:normal;font-family:var(--wpt-mono);font-size:9px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--wpt-lichen)}
+.wpt-cursor[data-on="1"] i{transform:translate(-50%,-50%) scale(1)}
+
+/* ---------- nav (reference: bracketed mono) ---------- */
+.wpt-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;
+  justify-content:space-between;padding:clamp(14px,1.5vw,20px) clamp(20px,3.4vw,54px)}
+.wpt-nav-mark{font-family:var(--wpt-display);font-weight:300;font-size:clamp(15px,1.35vw,19px);
+  letter-spacing:.02em;opacity:.92}
+.wpt-nav-right{display:flex;gap:clamp(14px,2.6vw,44px)}
+.wpt-nav-right a,.wpt-nav-right button{font-family:var(--wpt-mono);font-size:11px;letter-spacing:.07em;
+  text-transform:uppercase;min-height:44px;display:inline-flex;align-items:center}
+.wpt-nav-right a:hover,.wpt-nav-right button:hover{color:var(--wpt-lichen)}
+
+/* ---------- menu ---------- */
+.wpt-menu{position:fixed;inset:0;z-index:1100;background:#0F120C;display:none;flex-direction:column;
+  justify-content:center;padding:clamp(24px,6vw,80px);
+  clip-path:polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)}
+.wpt-menu.is-open{display:flex}
+.wpt-menu ul{list-style:none;display:flex;flex-direction:column;gap:.18em}
+.wpt-menu a{font-family:var(--wpt-display);font-weight:200;letter-spacing:-.03em;
+  font-size:clamp(34px,8.4vw,86px);line-height:1.06;display:inline-block}
+.wpt-menu a:hover{color:var(--wpt-lichen)}
+.wpt-menu-close{position:absolute;top:clamp(14px,1.5vw,20px);right:clamp(20px,3.4vw,54px);
+  font-family:var(--wpt-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+  min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:flex-end}
+
+/* ---------- HERO: typographic, like the reference ---------- */
+.wpt-hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(78px,9vw,120px) clamp(20px,3.4vw,54px) clamp(28px,4vw,54px);overflow:hidden;isolation:isolate}
+.wpt-hero-bg{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.wpt-hero-bg img{width:100%;height:100%;object-fit:cover;object-position:58% 44%}
+/* measured scrim: the fox frame's bright tundra bokeh needs ~50% darkening for AA */
+.wpt-hero-bg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(9,11,8,.74) 0%,rgba(9,11,8,.40) 30%,rgba(9,11,8,.52) 55%,rgba(9,11,8,.80) 78%,rgba(9,11,8,.94) 100%)}
+.wpt-hero-inner-z{position:relative;z-index:1}
+.wpt-hero-mark{overflow:hidden}
+.wpt-hero-mark span{display:block}
+.wpt-hero-sub{font-family:var(--wpt-mono);font-size:clamp(10px,1vw,13px);letter-spacing:.34em;
+  text-transform:uppercase;color:#9AA089;margin-top:clamp(10px,1.4vw,20px)}
+.wpt-hero-bottom{display:grid;grid-template-columns:1fr;gap:clamp(24px,3vw,48px);align-items:end}
+@media (min-width:900px){.wpt-hero-bottom{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}}
+.wpt-hero-say{max-width:16ch}
+.wpt-hero-note{font-family:var(--wpt-mono);font-size:12px;line-height:1.7;color:#A9AE9C;max-width:46ch}
+.wpt-hero-note b{color:var(--wpt-lichen);font-weight:400}
+
+/* ---------- floating centrepiece (reference: the 3D object on a tinted ground) ---------- */
+.wpt-float{min-height:100svh;position:relative;overflow:hidden;display:flex;align-items:flex-end;
+  padding:clamp(60px,9vw,130px) clamp(20px,3.4vw,54px)}
+.wpt-float-obj.wpt-par{position:absolute;inset:0;z-index:0}
+.wpt-float-obj::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(12,14,10,.42) 0%,rgba(12,14,10,.06) 34%,rgba(12,14,10,.58) 72%,rgba(12,14,10,.86) 100%)}
+.wpt-float-say{position:relative;max-width:20ch;z-index:2}
+.wpt-float-tag{position:absolute;right:clamp(20px,3.4vw,54px);top:clamp(90px,11vw,150px);z-index:2;
+  font-family:var(--wpt-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#C3C9B4}
+
+/* line-by-line opacity gradient (the reference's statement device) */
+.wpt-fade-lines .wpt-ln{display:block}
+
+/* ---------- section heading that scrolls under the nav ---------- */
+.wpt-head{position:relative;padding:clamp(40px,6vw,90px) clamp(20px,3.4vw,54px) 0}
+.wpt-head .wpt-sec-title{max-width:none}
+
+/* ---------- projects ---------- */
+.wpt-projects{padding-top:clamp(20px,3vw,40px)}
+.wpt-proj-grid{display:grid;grid-template-columns:1fr;gap:clamp(34px,4.6vw,80px)}
+@media (min-width:900px){.wpt-proj-grid{grid-template-columns:repeat(2,1fr)}
+  .wpt-proj:nth-child(even){margin-top:clamp(40px,8vw,140px)}}
+.wpt-proj-media{position:relative;overflow:hidden;aspect-ratio:4/3;background:#0d0d0d}
+.wpt-proj-media img{width:100%;height:100%;object-fit:cover;transform:scale(1.05);
+  transition:transform 1.2s cubic-bezier(.1,.4,.15,1)}
+.wpt-proj:hover .wpt-proj-media img{transform:scale(1)}
+/* service tag chips sit ON the image bottom edge, as in the reference */
+.wpt-chips{position:absolute;left:0;right:0;bottom:0;display:flex;flex-wrap:wrap;z-index:2}
+.wpt-chips li{list-style:none;font-family:var(--wpt-mono);font-size:9.5px;letter-spacing:.07em;
+  text-transform:uppercase;padding:.85em 1em;background:rgba(12,14,10,.72);color:#E4E8D8;
+  backdrop-filter:blur(6px);border-right:1px solid rgba(255,255,255,.12)}
+.wpt-proj-title{display:flex;align-items:baseline;gap:.7em;margin-top:1.4em}
+.wpt-proj-title i{width:7px;height:7px;background:var(--wpt-lichen);flex:none;display:block}
+.wpt-proj-title h3{font-family:var(--wpt-display);font-weight:300;letter-spacing:-.02em;
+  font-size:clamp(22px,2.5vw,34px);line-height:1.1}
+.wpt-proj p{font-family:var(--wpt-mono);font-size:11.5px;line-height:1.65;letter-spacing:.04em;
+  text-transform:uppercase;color:#A6AC98;margin-top:.9em;max-width:40ch}
+.wpt-proj-link{display:inline-flex;align-items:center;min-height:44px;margin-top:.6em;
+  font-family:var(--wpt-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border-bottom:1px solid var(--wpt-lichen);color:var(--wpt-lichen)}
+
+/* ---------- wide statement band ---------- */
+.wpt-band{padding:clamp(70px,11vw,190px) clamp(20px,3.4vw,54px)}
+.wpt-band .wpt-say{max-width:22ch;font-size:clamp(28px,4.6vw,72px)}
+
+/* ---------- species strip ---------- */
+.wpt-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(8px,1vw,14px)}
+@media (min-width:760px){.wpt-strip{grid-template-columns:repeat(5,1fr)}}
+.wpt-strip figure{position:relative;overflow:hidden;aspect-ratio:3/4;background:#1b1b1b}
+.wpt-strip img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.1,.4,.15,1)}
+.wpt-strip figure:hover img{transform:scale(1.06)}
+.wpt-strip figcaption{position:absolute;left:0;bottom:0;padding:.8em 1em;font-family:var(--wpt-mono);
+  font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#fff;
+  background:rgba(12,14,10,.66);backdrop-filter:blur(5px)}
+
+/* ---------- journal (the light taupe band) ---------- */
+.wpt-journal{background:var(--wpt-g-moss);color:#15170F}
+.wpt-journal .wpt-sec-title,.wpt-journal .wpt-say{color:#15170F}
+.wpt-jgrid{display:grid;grid-template-columns:1fr;gap:clamp(10px,1.2vw,18px);margin-top:clamp(28px,4vw,60px)}
+@media (min-width:900px){.wpt-jgrid{grid-template-columns:1.6fr repeat(3,1fr)}}
+.wpt-jcard{position:relative;overflow:hidden;aspect-ratio:4/5;background:#4f4e3f;display:block}
+.wpt-jcard.is-lead{aspect-ratio:16/11}
+@media (min-width:900px){.wpt-jcard.is-lead{aspect-ratio:auto}}
+.wpt-jcard img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.1,.4,.15,1)}
+.wpt-jcard:hover img{transform:scale(1.05)}
+.wpt-jcard-chip{position:absolute;top:1em;right:1em;font-family:var(--wpt-mono);font-size:10px;
+  letter-spacing:.06em;padding:.6em .9em;background:rgba(20,24,14,.62);color:#E7EBD9;backdrop-filter:blur(6px)}
+.wpt-jcard-body{position:absolute;left:0;right:0;bottom:0;padding:clamp(14px,1.6vw,26px);
+  background:linear-gradient(0deg,rgba(10,12,8,.86),transparent);color:#fff}
+.wpt-jcard-body h3{font-family:var(--wpt-display);font-weight:300;font-size:clamp(17px,1.7vw,24px);letter-spacing:-.015em;line-height:1.15}
+.wpt-jcard-body time{display:block;font-family:var(--wpt-mono);font-size:10px;letter-spacing:.06em;color:#C7CDB6;margin-top:.6em}
+.wpt-jcard-body .wpt-more{display:inline-flex;align-items:center;min-height:44px;margin-top:.2em;
+  font-family:var(--wpt-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid currentColor}
+
+/* ---------- team + quote ---------- */
+.wpt-two{display:grid;grid-template-columns:1fr;gap:clamp(22px,3vw,48px)}
+@media (min-width:760px){.wpt-two{grid-template-columns:repeat(2,1fr)}}
+.wpt-person{border-top:1px solid rgba(255,255,255,.18);padding-top:clamp(14px,1.8vw,26px)}
+.wpt-person h3{font-family:var(--wpt-display);font-weight:300;font-size:clamp(21px,2.3vw,32px);letter-spacing:-.02em}
+.wpt-person span{display:block;font-family:var(--wpt-mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--wpt-lichen);margin-top:.7em}
+.wpt-person p{font-family:var(--wpt-mono);font-size:11.5px;line-height:1.7;color:#A6AC98;margin-top:1em;max-width:38ch}
+
+/* ---------- facts ---------- */
+.wpt-facts{list-style:none;margin-top:clamp(20px,2.4vw,34px);border-top:1px solid rgba(255,255,255,.16)}
+.wpt-facts li{display:flex;justify-content:space-between;gap:2em;padding:.95em 0;
+  border-bottom:1px solid rgba(255,255,255,.16);font-family:var(--wpt-mono);font-size:11.5px;letter-spacing:.03em}
+.wpt-facts li span:first-child{color:#8E9482;text-transform:uppercase;font-size:10px;letter-spacing:.08em}
+
+/* ---------- CTA + footer ---------- */
+.wpt-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;min-width:44px;
+  padding:0 1.9em;background:var(--wpt-lichen);color:#171C09;font-family:var(--wpt-mono);font-size:11.5px;
+  letter-spacing:.08em;text-transform:uppercase;margin-top:1.7em;
+  transition:transform .45s cubic-bezier(.1,.4,.15,1),background .3s}
+.wpt-btn:hover{background:#D5E495;transform:translateY(-2px)}
+.wpt-foot{padding:clamp(56px,7vw,110px) clamp(20px,3.4vw,54px) clamp(20px,2.4vw,32px);background:#101208}
+.wpt-fgrid{display:grid;grid-template-columns:1fr;gap:clamp(24px,3vw,48px)}
+@media (min-width:560px){.wpt-fgrid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.wpt-fgrid{grid-template-columns:repeat(4,1fr)}}
+.wpt-fcol h4{font-family:var(--wpt-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#8E9482;margin-bottom:1.3em}
+.wpt-fcol ul{list-style:none;display:flex;flex-direction:column}
+.wpt-fcol a,.wpt-fcol li{font-family:var(--wpt-mono);font-size:11.5px;letter-spacing:.04em;color:#D4D8C8;overflow-wrap:anywhere}
+.wpt-fcol a{min-height:44px;display:inline-flex;align-items:center}
+.wpt-fcol a:hover{color:var(--wpt-lichen)}
+.wpt-news{display:flex;gap:.5em;margin-bottom:1em}
+.wpt-news input{flex:1;min-width:0;background:transparent;border:1px solid rgba(255,255,255,.24);
+  color:#fff;font-family:var(--wpt-mono);font-size:11.5px;padding:.95em 1em;letter-spacing:.06em}
+.wpt-news input::placeholder{color:#8E9482;text-transform:uppercase}
+.wpt-news button{width:48px;min-height:44px;border:1px solid rgba(255,255,255,.24);display:grid;place-items:center}
+.wpt-news button:hover{border-color:var(--wpt-lichen);color:var(--wpt-lichen)}
+/* giant footer wordmark, as in the reference */
+.wpt-foot-mark{margin:clamp(52px,8vw,120px) 0 clamp(18px,2vw,26px);overflow:hidden;color:#E8EBDC}
+.wpt-foot-legal{display:flex;justify-content:space-between;gap:1.4em;flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.12);padding-top:1.2em;
+  font-family:var(--wpt-mono);font-size:10px;letter-spacing:.05em;color:#7E8474;text-transform:uppercase}
+
+/* ---------- media parallax rig (MEASURED off the reference) ----------
+   frame overflow-hidden; inner wrapper 112.6% of frame height, scale 1.025,
+   vertical drift across the frame's pass. No clip wipe: the reference has none. */
+.wpt-par{position:relative;overflow:hidden}
+.wpt-par > .wpt-par-in{position:absolute;top:-6.5%;left:0;right:0;height:113%;will-change:transform}
+.wpt-par > .wpt-par-in img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- services (reference: .service-point-square scale-in markers) ---------- */
+.wpt-services{padding:clamp(64px,9vw,150px) clamp(20px,3.4vw,54px)}
+.wpt-svc{display:flex;align-items:baseline;gap:clamp(14px,2vw,30px);padding:clamp(18px,2.6vw,34px) 0;
+  border-bottom:1px solid rgba(255,255,255,.14)}
+.wpt-svc:first-of-type{border-top:1px solid rgba(255,255,255,.14)}
+.wpt-svc i{width:clamp(9px,1vw,14px);height:clamp(9px,1vw,14px);background:var(--wpt-lichen);flex:none;display:block;align-self:center}
+.wpt-svc h3{font-family:var(--wpt-display);font-weight:200;letter-spacing:-.03em;line-height:1;
+  font-size:clamp(30px,5.6vw,84px)}
+.wpt-svc p{margin-left:auto;font-family:var(--wpt-mono);font-size:10.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:#8E9482;max-width:26ch;text-align:right}
+
+/* ---------- projects header: title layers OVER the fixed nav, as in the reference ---------- */
+.wpt-head{z-index:1001}
+.wpt-head .wpt-sec-title{position:relative;z-index:1001}
+.wpt-head-row{display:flex;justify-content:space-between;align-items:baseline;gap:2em;flex-wrap:wrap}
+.wpt-view-all{font-family:var(--wpt-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border-bottom:1px solid currentColor;min-height:44px;display:inline-flex;align-items:center;white-space:nowrap}
+.wpt-view-all:hover{color:var(--wpt-lichen)}
+
+/* ---------- about statement band ---------- */
+.wpt-about{padding:clamp(70px,11vw,190px) clamp(20px,3.4vw,54px)}
+.wpt-about .wpt-say{max-width:30ch;font-size:clamp(26px,4vw,62px)}
+
+/* ---------- testimonials ---------- */
+.wpt-quotes{display:grid;grid-template-columns:1fr;gap:clamp(26px,4vw,64px)}
+@media (min-width:900px){.wpt-quotes{grid-template-columns:repeat(2,1fr)}}
+.wpt-q{border-top:1px solid rgba(255,255,255,.16);padding-top:clamp(16px,2vw,28px)}
+.wpt-q blockquote{font-family:var(--wpt-display);font-weight:300;letter-spacing:-.02em;line-height:1.22;
+  font-size:clamp(18px,1.75vw,25px);color:#DDE1D2}
+.wpt-q figcaption{margin-top:1.4em;font-family:var(--wpt-mono);font-size:10.5px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--wpt-lichen)}
+
+/* ---------- menu hover image preview (reference: .Navbar-image-container polygon) ---------- */
+.wpt-menu-grid{display:grid;grid-template-columns:1fr;gap:clamp(24px,4vw,70px);align-items:center}
+@media (min-width:900px){.wpt-menu-grid{grid-template-columns:minmax(0,1fr) minmax(0,28.5vw)}}
+.wpt-menu-img{position:relative;aspect-ratio:1.86/1;overflow:hidden;display:none;
+  clip-path:polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)}
+@media (min-width:900px){.wpt-menu-img{display:block}}
+.wpt-menu-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.wpt-menu-img img.is-on{opacity:1}
+
+/* ---------- portal layer: the page scales away behind the menu (reference .scaling-layer) ---------- */
+.wpt-page{will-change:transform;transform-origin:50% 40%}
+
+/* ---------- hero scroll cue ---------- */
+.wpt-cue{font-family:var(--wpt-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8E9482}
+
+/* ---------- SIGNATURE REVEAL: the focus pull ----------
+   Every photograph arrives soft and resolves sharp, the way a long lens finds
+   an animal. Blur + a breath of scale + a saturation lift, resolving together.
+   This is OUR device for this client, not the reference's (it has none). */
+.wpt-js .wpt-focus img{filter:blur(16px) saturate(.72);transform:scale(1.06);will-change:filter,transform}
+html.wpt-reduced .wpt-focus img{filter:none!important;transform:none!important}
+html:not(.wpt-js) .wpt-focus img{filter:none;transform:none}
+
+/* ---------- reveal primitives ---------- */
+.wpt-js [data-rise]{opacity:0;transform:translateY(24px);filter:blur(8px)}
+html.wpt-reduced [data-rise]{opacity:1!important;transform:none!important;filter:none!important}
+html:not(.wpt-js) [data-rise]{opacity:1;transform:none;filter:none}
+@media (prefers-reduced-motion:reduce){.wpt-proj-media img{transform:none}}
+</style>
+</head>
+<body>
+
+<div class="wpt-cursor" data-on="0" aria-hidden="true"><i data-cur-label></i></div>
+
+<nav class="wpt-nav" aria-label="Main">
+  <a class="wpt-nav-mark" href="#top">Wildlife Photo Travel</a>
+  <div class="wpt-nav-right">
+    <a href="#contact" data-cur="write">[ Contact ]</a>
+    <button data-menu="open" aria-haspopup="dialog">[ Menu ]</button>
+  </div>
+</nav>
+
+<div class="wpt-menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <button class="wpt-menu-close" data-menu="close">[ Close ]</button>
+  <div class="wpt-menu-grid">
+    <ul>
+      <li><a href="#expeditions" data-menu="close" data-mimg="assets/tour-fox.webp">Expeditions</a></li>
+      <li><a href="#hornstrandir" data-menu="close" data-mimg="assets/hornstrandir.webp">Hornstrandir</a></li>
+      <li><a href="#team" data-menu="close" data-mimg="assets/feature-wide.webp">The team</a></li>
+      <li><a href="#journal" data-menu="close" data-mimg="assets/w-arcticfox.webp">Journal</a></li>
+      <li><a href="#contact" data-menu="close" data-mimg="assets/tour-algeria.webp">Contact</a></li>
+    </ul>
+    <div class="wpt-menu-img" aria-hidden="true">
+      <img src="assets/tour-fox.webp" alt="" data-mimg-el>
+      <img src="assets/hornstrandir.webp" alt="" data-mimg-el>
+      <img src="assets/feature-wide.webp" alt="" data-mimg-el>
+      <img src="assets/w-arcticfox.webp" alt="" data-mimg-el>
+      <img src="assets/tour-algeria.webp" alt="" data-mimg-el>
+    </div>
+  </div>
+</div>
+
+<div class="wpt-page"><main id="top">
+
+  <!-- ===== HERO: typographic, giant thin wordmark (reference composition) ===== -->
+  <header class="wpt-hero" data-ground="#141414">
+    <div class="wpt-hero-bg wpt-focus" data-focus-hero>
+      <img src="assets/hero-fox-xl.webp" width="2400" height="1590" alt="An arctic fox cub on a lichen covered rock in the Hornstrandir nature reserve" fetchpriority="high">
+    </div>
+    <div class="wpt-hero-inner-z">
+      <h1 class="wpt-hero-mark wpt-huge" aria-label="Wildlife Photo Travel"><span data-mark>WILDLIFE</span></h1>
+      <p class="wpt-hero-sub">Photo Travel · Ísafjörður · Iceland</p>
+    </div>
+    <div class="wpt-hero-bottom wpt-hero-inner-z">
+      <p class="wpt-say wpt-hero-say wpt-fade-lines" data-lines data-rise>You wait for the light, not the schedule</p>
+      <p class="wpt-hero-note" data-rise>Wildlife Photo Travel runs photo expeditions in the most remote places we can reach. Arctic fox in Hornstrandir, red deer in Scotland, the Sahara in Algeria. <b>Four to ten guests. Two to three guides.</b></p>
+      <p class="wpt-cue" data-rise style="grid-column:1/-1">scroll down</p>
+    </div>
+  </header>
+
+  <!-- ===== FLOATING CENTREPIECE (reference: 3D object on a tinted ground) ===== -->
+  <section class="wpt-float" data-ground="#2C3320" aria-label="The arctic fox">
+    <div class="wpt-float-obj wpt-par">
+      <div class="wpt-par-in"><img loading="lazy" src="assets/float-moor.webp" width="1800" height="1198" alt="Storm light breaking on a moorland ridge, a single peak catching the sun"></div>
+    </div>
+    <p class="wpt-float-tag">Isle of Jura · Scotland</p>
+    <p class="wpt-say wpt-float-say wpt-fade-lines" data-lines>We photograph where the weather decides the day, not the itinerary.</p>
+  </section>
+
+  <!-- ===== EXPEDITIONS ===== -->
+  <div class="wpt-head" id="expeditions"><div class="wpt-head-row">
+    <h2 class="wpt-sec-title" data-rise>expeditions</h2>
+    <a class="wpt-view-all" href="https://wildlifephototravel.com/photo-tours/" target="_blank" rel="noopener" data-cur="open">View all tours</a>
+  </div></div>
+  <section class="wpt-sec wpt-projects" aria-label="Expeditions">
+    <div class="wpt-wrap wpt-proj-grid">
+
+      <article class="wpt-proj">
+        <div class="wpt-proj-media wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/tour-fox.webp" width="1600" height="1066" alt="Arctic fox in the Hornstrandir nature reserve"></div>
+          
+          <ul class="wpt-chips"><li>Hornstrandir</li><li>8 days</li><li>4 to 10 guests</li><li>All levels</li></ul>
+        </div>
+        <div class="wpt-proj-title"><i aria-hidden="true"></i><h3>Arctic fox</h3></div>
+        <p>Hornstrandir nature reserve, Iceland. Based at the Hornbjargsviti lighthouse, reachable only by boat.</p>
+        <a class="wpt-proj-link" href="https://wildlifephototravel.com/arctic-fox-iceland-photo-tour/" target="_blank" rel="noopener" data-cur="open">See the tour</a>
+      </article>
+
+      <article class="wpt-proj">
+        <div class="wpt-proj-media wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/tour-deer.webp" width="1500" height="998" alt="A red deer stag at dusk in Scotland"></div>
+          
+          <ul class="wpt-chips"><li>Isle of Jura</li><li>8 days</li><li>4 to 10 guests</li><li>Wildlife &amp; landscape</li></ul>
+        </div>
+        <div class="wpt-proj-title"><i aria-hidden="true"></i><h3>Red deer</h3></div>
+        <p>Isle of Jura, Scotland. More than 6,000 red deer live on the island. 10 to 17 October 2026.</p>
+        <a class="wpt-proj-link" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="open">See the tour</a>
+      </article>
+
+      <article class="wpt-proj">
+        <div class="wpt-proj-media wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/tour-algeria.webp" width="1600" height="1064" alt="Sandstone towers and dunes at sunset in Tassili n Ajjer, Algeria"></div>
+          
+          <ul class="wpt-chips"><li>UNESCO site</li><li>Sahara</li><li>Landscape</li><li>4 to 10 guests</li></ul>
+        </div>
+        <div class="wpt-proj-title"><i aria-hidden="true"></i><h3>Tassili n'Ajjer</h3></div>
+        <p>Tassili n'Ajjer Cultural Park, Algeria. Tuareg territory, a UNESCO World Heritage Site and Biosphere Reserve.</p>
+        <a class="wpt-proj-link" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="open">See the tour</a>
+      </article>
+
+      <article class="wpt-proj">
+        <div class="wpt-proj-media wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/hornstrandir.webp" width="1600" height="888" alt="Cliffs and tundra above the sea in Hornstrandir"></div>
+          
+          <ul class="wpt-chips"><li>Private</li><li>Tailor made</li><li>Any season</li></ul>
+        </div>
+        <div class="wpt-proj-title"><i aria-hidden="true"></i><h3>Private tours</h3></div>
+        <p>Built around what you want to photograph, for small groups, at the pace the weather allows.</p>
+        <a class="wpt-proj-link" href="mailto:contact@wildlifephototravel.com" data-cur="write">Ask us</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===== STATEMENT BAND ===== -->
+  <section class="wpt-band" data-ground="#1A1E14" aria-label="Approach">
+    <div class="wpt-wrap">
+      <p class="wpt-say wpt-fade-lines" data-lines>Curiosity, ethics and nature conservation sum up who we are. We keep the groups small so everyone gets real time in the field.</p>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES (reference: service points with square markers) ===== -->
+  <section class="wpt-services" aria-label="What we offer">
+    <div class="wpt-wrap">
+      <p class="wpt-mono-caps" style="color:#8E9482;margin-bottom:2em">What we offer</p>
+      <div class="wpt-svc"><i data-svc-sq aria-hidden="true"></i><h3>Photo tours</h3><p>Guided expeditions to Iceland, Scotland and Algeria</p></div>
+      <div class="wpt-svc"><i data-svc-sq aria-hidden="true"></i><h3>Workshops</h3><p>Technique and artistry in the field, all levels</p></div>
+      <div class="wpt-svc"><i data-svc-sq aria-hidden="true"></i><h3>Private tours</h3><p>Tailor made programs for small groups</p></div>
+    </div>
+  </section>
+
+  <!-- ===== SPECIES ===== -->
+  <section class="wpt-sec" aria-label="What you photograph">
+    <div class="wpt-wrap">
+      <p class="wpt-mono-caps" style="color:#8E9482;margin-bottom:2em">What you photograph / Iceland</p>
+      <div class="wpt-strip">
+        <figure class="wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/w-arcticfox.webp" width="1000" height="666" alt="An arctic fox foraging on the shore below the Hornbjarg cliffs"></div><figcaption>Arctic fox</figcaption></figure>
+        <figure class="wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/w-puffin.webp" width="1000" height="666" alt="Puffin at Dyrhólaey"></div><figcaption>Puffin</figcaption></figure>
+        <figure class="wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/w-reindeer.webp" width="1000" height="665" alt="Reindeer in east Iceland"></div><figcaption>Reindeer</figcaption></figure>
+        <figure class="wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/w-seal.webp" width="1000" height="665" alt="Seal at Jökulsárlón"></div><figcaption>Seal</figcaption></figure>
+        <figure class="wpt-par wpt-focus"><div class="wpt-par-in"><img loading="lazy" src="assets/w-raven.webp" width="1000" height="665" alt="Raven in Iceland"></div><figcaption>Raven</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PLACE ===== -->
+  <section class="wpt-sec" id="hornstrandir" aria-labelledby="wpt-place-h">
+    <div class="wpt-wrap wpt-two">
+      <div class="wpt-par wpt-focus" style="aspect-ratio:4/3"><div class="wpt-par-in"><img loading="lazy" src="assets/feature-wide.webp" width="2000" height="1331" alt="Storm light on a moorland ridge"></div></div>
+      <div>
+        <p class="wpt-mono-caps" style="color:#8E9482;margin-bottom:1.6em">The place</p>
+        <h2 class="wpt-say" id="wpt-place-h" data-rise>Hornstrandir</h2>
+        <p style="font-family:var(--wpt-mono);font-size:11.5px;line-height:1.75;color:#A6AC98;margin-top:1.2em;max-width:44ch;text-transform:uppercase" data-rise>A wild peninsula in the Westfjords, reachable only by boat, where people have not been able to settle. It holds the highest density of arctic fox in the world.</p>
+        <ul class="wpt-facts" data-rise>
+          <li><span>Access</span><span>By boat only</span></li>
+          <li><span>Base camp</span><span>Hornbjargsviti lighthouse</span></li>
+          <li><span>Duration</span><span>8 days</span></li>
+          <li><span>Group</span><span>4 to 10 guests · 2 to 3 guides</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT STATEMENT ===== -->
+  <section class="wpt-about" data-ground="#1A1E14" aria-label="Our dedication">
+    <div class="wpt-wrap">
+      <p class="wpt-say wpt-fade-lines" data-lines>Our team is here to listen to your needs, and to build each program around the people on it. The strength of Wildlife Photo Travel lies in the dedication of its guides.</p>
+    </div>
+  </section>
+
+  <!-- ===== TEAM ===== -->
+  <section class="wpt-sec" id="team" aria-labelledby="wpt-team-h">
+    <div class="wpt-wrap">
+      <p class="wpt-mono-caps" style="color:#8E9482;margin-bottom:2em" id="wpt-team-h">The team</p>
+      <div class="wpt-two">
+        <article class="wpt-person" data-rise>
+          <h3>Samy Berkani</h3><span>Wildlife photographer</span>
+          <p>Guides the wildlife side of every expedition: approach, behaviour, fieldcraft and the ethics of working close to animals.</p>
+        </article>
+        <article class="wpt-person" data-rise>
+          <h3>Urip Dunker</h3><span>Landscape photographer</span>
+          <p>Works on light, composition and the land itself, so the animal is never separated from the place it lives in.</p>
+        </article>
+      </div>
+      <div class="wpt-quotes" style="margin-top:clamp(48px,7vw,110px)">
+        <figure class="wpt-q" data-rise>
+          <blockquote>“We had 8 amazing, unforgettable days in Hornstrandir. The conditions definitely pushed me at times, but we were more than rewarded with incredible fox encounters and breathtaking views. I'll have to come back!”</blockquote>
+          <figcaption>Anna Drinenberg · Arctic fox expedition</figcaption>
+        </figure>
+        <figure class="wpt-q" data-rise>
+          <blockquote>“I had a great time on the tour! Everything felt well organized and the length of time was good because it allowed us to get to know the area and decide where we wanted to spend our time. I'm looking forward to joining more trips!”</blockquote>
+          <figcaption>Tyler Orman · Photo tour guest</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== JOURNAL (light taupe band, reference frame 06) ===== -->
+  <section class="wpt-sec wpt-journal" id="journal" aria-labelledby="wpt-j-h">
+    <div class="wpt-wrap">
+      <h2 class="wpt-sec-title" id="wpt-j-h" data-rise>journal</h2>
+      <div class="wpt-jgrid">
+        <a class="wpt-jcard is-lead wpt-par wpt-focus" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="read"><div class="wpt-par-in"><img loading="lazy" src="assets/w-arcticfox.webp" width="1000" height="666" alt=""></div>
+          <span class="wpt-jcard-chip">Iceland</span>
+          <span class="wpt-jcard-body">
+            <h3>The wildlife of Iceland: the complete guide to Icelandic animals</h3>
+            <time datetime="2026-06-29">29 June 2026</time>
+            <span class="wpt-more">Read more</span>
+          </span>
+        </a>
+        <a class="wpt-jcard wpt-par wpt-focus" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="read"><div class="wpt-par-in"><img loading="lazy" src="assets/w-raven.webp" width="1000" height="665" alt=""></div>
+          <span class="wpt-jcard-body"><h3>How to take great landscape photos</h3><time datetime="2026-06-12">12 June 2026</time></span>
+        </a>
+        <a class="wpt-jcard wpt-par wpt-focus" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="read"><div class="wpt-par-in"><img loading="lazy" src="assets/w-reindeer.webp" width="1000" height="665" alt=""></div>
+          <span class="wpt-jcard-body"><h3>Iceland ring road: 12 days of photography</h3><time datetime="2026-05-27">27 May 2026</time></span>
+        </a>
+        <a class="wpt-jcard wpt-par wpt-focus" href="https://wildlifephototravel.com/" target="_blank" rel="noopener" data-cur="read"><div class="wpt-par-in"><img loading="lazy" src="assets/w-seal.webp" width="1000" height="665" alt=""></div>
+          <span class="wpt-jcard-body"><h3>10 mistakes to avoid in wildlife photography</h3><time datetime="2026-05-12">12 May 2026</time></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="wpt-sec" id="contact" data-ground="#141414" aria-labelledby="wpt-cta-h">
+    <div class="wpt-wrap">
+      <h2 class="wpt-say wpt-fade-lines" id="wpt-cta-h" data-lines style="max-width:18ch">Tell us what you want to photograph and we will tell you which expedition fits.</h2>
+      <a class="wpt-btn" href="mailto:contact@wildlifephototravel.com?subject=Photo%20expedition%20enquiry" data-cur="write">Start a conversation</a>
+    </div>
+  </section>
+</main>
+
+<footer class="wpt-foot">
+  <div class="wpt-wrap">
+    <div class="wpt-fgrid">
+      <div class="wpt-fcol"><h4>Menu/</h4><ul>
+        <li><a href="#expeditions">[ Expeditions ]</a></li>
+        <li><a href="#team">[ Team ]</a></li>
+        <li><a href="#journal">[ Journal ]</a></li>
+        <li><a href="#contact">[ Contact ]</a></li>
+      </ul></div>
+      <div class="wpt-fcol"><h4>Base/</h4><ul>
+        <li>Pollgata 2</li>
+        <li>400 Ísafjörður, Iceland</li>
+      </ul></div>
+      <div class="wpt-fcol"><h4>Newsletter/</h4>
+        <form class="wpt-news" onsubmit="return false">
+          <label for="wpt-mail" class="wpt-mono-caps" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Email</label>
+          <input id="wpt-mail" type="email" name="email" autocomplete="email" placeholder="Email">
+          <button type="submit" aria-label="Subscribe">→</button>
+        </form>
+        <p style="font-family:var(--wpt-mono);font-size:11px;line-height:1.6;color:#8E9482">Occasional notes from the field and new departures.</p>
+      </div>
+      <div class="wpt-fcol"><h4>Contact/</h4><ul>
+        <li><a href="mailto:contact@wildlifephototravel.com">contact@<br>wildlifephototravel.com</a></li>
+        <li><a href="tel:+3546204957">620 4957</a></li>
+      </ul></div>
+    </div>
+    <div class="wpt-foot-mark wpt-huge" aria-hidden="true">WILDLIFE</div>
+    <div class="wpt-foot-legal">
+      <span>Concept redesign · not the official Wildlife Photo Travel website</span>
+      <span>Photography © Wildlife Photo Travel · from wildlifephototravel.com, August 2026</span>
+    </div>
+  </div>
+</footer></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
+<script>
+(function(){
+'use strict';
+gsap.registerPlugin(ScrollTrigger, CustomEase);
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced) document.documentElement.classList.add('wpt-reduced');
+var menuOpen = false;
+
+/* the reference's own eases, verbatim */
+CustomEase.create('premiumGlide','M0,0 C0.1,0.4 0.15,1 1,1');
+CustomEase.create('natureSway','M0,0 C0.08,0.494 0.14,1 1,1');
+CustomEase.create('portalEase','M0,0 C0.05,0.6 0.15,1 1,1');
+
+var lenis = null;
+if (!reduced) {
+  lenis = new Lenis({ anchors: true });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(function(t){ lenis.raf(t*1000); });
+  gsap.ticker.lagSmoothing(0);
+}
+
+/* ---- statement lines: split, then fade in with a DECREASING opacity ramp
+        (the reference's signature: later lines sit dimmer than earlier ones) ---- */
+function initLines(){
+  document.querySelectorAll('[data-lines]').forEach(function(el){
+    var text = el.textContent.replace(/\s+/g,' ').trim();
+    el.setAttribute('aria-label', text);
+    var words = text.split(' ');
+    el.textContent = '';
+    var frag = document.createDocumentFragment();
+    words.forEach(function(w,i){
+      var sp = document.createElement('span');
+      sp.className='wpt-ln-w'; sp.textContent=w;
+      sp.setAttribute('aria-hidden','true');
+      sp.style.display='inline-block';
+      frag.appendChild(sp);
+      // the space MUST be a text node between spans: whitespace inside an
+      // inline-block collapses to zero width and the words run together.
+      if (i < words.length-1) frag.appendChild(document.createTextNode(' '));
+    });
+    el.appendChild(frag);
+    var spans = el.querySelectorAll('.wpt-ln-w');
+    // opacity ramp 1 -> .34 across the statement, as in the reference
+    spans.forEach(function(s,i){
+      s.dataset.target = (1 - (i/Math.max(1,spans.length-1))*0.66).toFixed(3);
+    });
+    if (reduced) { spans.forEach(function(s){ s.style.opacity = s.dataset.target; }); return; }
+    gsap.set(spans, { y: 40, opacity: 0, rotateZ: 5 });
+    var play = function(delay){
+      gsap.timeline({ delay: delay || 0 })
+        .to(spans, { y:0, rotateZ:0, duration:1.4, stagger:.07, ease:'natureSway' })
+        .to(spans, { opacity: function(i,t){ return t.dataset.target; }, duration:1.0, stagger:.07, ease:'premiumGlide' }, 0);
+    };
+    if (el.getBoundingClientRect().top < innerHeight * 0.92) { play(0.45); return; }   // above the fold: play on mount
+    ScrollTrigger.create({ trigger: el, start:'top 78%', once:true, onEnter: function(){ play(0); } });
+  });
+}
+
+/* ---- blur-led rise ---- */
+function initRise(){
+  if (reduced) return;
+  document.querySelectorAll('[data-rise]').forEach(function(el){
+    var vars = {opacity:1,y:0,filter:'blur(0px)',duration:1.1,ease:'premiumGlide'};
+    if (el.getBoundingClientRect().top < innerHeight * 0.92) { vars.delay = 0.3; gsap.to(el, vars); return; }
+    vars.scrollTrigger = {trigger:el,start:'top 88%',once:true};
+    gsap.to(el, vars);
+  });
+}
+/* ---- media parallax: MEASURED off the reference ----
+   frame overflow-hidden; inner wrapper 113% tall, constant scale 1.025,
+   vertical drift across the frame's pass through the viewport.
+   Reference sample: matrix(1.025,0,0,1.025,0,-33.99) at frameTop 549
+                  -> matrix(1.025,0,0,1.025,0,+57.23) at frameTop -503
+   The reference does NOT clip-wipe its images. */
+function initPar(){
+  document.querySelectorAll('.wpt-par').forEach(function(frame){
+    var inner = frame.querySelector('.wpt-par-in');
+    if (!inner) return;
+    if (reduced) { gsap.set(inner,{y:0,scale:1}); return; }
+    /* drift stays inside the centered 13% spare: +/-6.5% of the frame
+       (= 5.75% of the 113% inner), so the frame is covered at every scroll
+       position regardless of frame size. Same visual magnitude as the
+       reference's measured -34..+57px on its 586px frames. */
+    gsap.fromTo(inner, { yPercent: -5.75, scale: 1.025 }, {
+      yPercent: 5.75, scale: 1.025, ease: 'none',
+      scrollTrigger: { trigger: frame, start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  });
+}
+
+/* ---- GROUND SCRUB: the page background shifts per section (reference device) ---- */
+function initGround(){
+  var body = document.body;
+  document.querySelectorAll('[data-ground]').forEach(function(sec){
+    var c = sec.getAttribute('data-ground');
+    ScrollTrigger.create({
+      trigger: sec, start:'top 55%', end:'bottom 45%',
+      onEnter:      function(){ gsap.to(body,{backgroundColor:c,duration:.9,ease:'premiumGlide'}); },
+      onEnterBack:  function(){ gsap.to(body,{backgroundColor:c,duration:.9,ease:'premiumGlide'}); }
+    });
+  });
+}
+
+
+/* ---- giant wordmarks: rise out of their mask ---- */
+function initMarks(){
+  if (reduced) return;
+  document.querySelectorAll('[data-mark]').forEach(function(el){
+    gsap.fromTo(el,{yPercent:104},{yPercent:0,duration:1.5,ease:'premiumGlide',delay:.15});
+  });
+}
+
+/* ---- cursor ---- */
+(function(){
+  var cur=document.querySelector('.wpt-cursor'), lab=document.querySelector('[data-cur-label]');
+  if(!cur||!lab||reduced) return;
+  if(!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  var qx=gsap.quickTo(cur,'x',{duration:.45,ease:'power3.out'}),
+      qy=gsap.quickTo(cur,'y',{duration:.45,ease:'power3.out'}),mx=0,my=0,cache=null;
+  function refresh(){
+    var e=document.elementFromPoint(mx,my), hit=e?e.closest('[data-cur]'):null;
+    if(hit!==cache){cur.setAttribute('data-on',hit?'1':'0');lab.textContent=hit?(hit.getAttribute('data-cur')||''):'';cache=hit;}
+  }
+  addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;qx(mx);qy(my);requestAnimationFrame(refresh);});
+  addEventListener('scroll',function(){requestAnimationFrame(refresh);},{passive:true});
+})();
+
+/* ---- menu: y30% + blur(8px), premiumGlide (reference values) ---- */
+(function(){
+  var menu=document.querySelector('.wpt-menu'), items=document.querySelectorAll('.wpt-menu a');
+  if(!menu) return; var busy=false;
+  function open(){
+    if(busy||menuOpen) return; busy=true; menuOpen=true;
+    menu.classList.add('is-open'); document.body.classList.add('wpt-lock'); if(lenis) lenis.stop();
+    if(!reduced) gsap.to('.wpt-page',{rotation:10,scale:1.5,y:450,x:300,ease:'power4.inOut',duration:1.25});
+    if(reduced){gsap.set(menu,{clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'});gsap.set(items,{y:0,opacity:1,filter:'none'});busy=false;return;}
+    gsap.set(items,{y:'30%',opacity:0,filter:'blur(8px)',rotateZ:-5});
+    gsap.timeline({onComplete:function(){busy=false;}})
+      /* bottom-up curtain, the reference's own values */
+      .to(menu,{clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',duration:1.1,ease:'premiumGlide'})
+      .to(items,{y:'0%',opacity:1,filter:'blur(0px)',rotateZ:0,duration:.9,stagger:.06,ease:'premiumGlide'},'-=0.65');
+  }
+  function close(){
+    if(busy||!menuOpen) return; busy=true; menuOpen=false;
+    var done=function(){menu.classList.remove('is-open');document.body.classList.remove('wpt-lock');if(lenis)lenis.start();busy=false;};
+    if(!reduced) gsap.to('.wpt-page',{rotation:0,scale:1,y:0,x:0,ease:'power3.inOut',duration:1.25});
+    if(reduced){gsap.set(menu,{clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});done();return;}
+    gsap.timeline({onComplete:function(){gsap.set(menu,{clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});done();}})
+      .to(items,{y:'30%',opacity:0,filter:'blur(8px)',duration:.4,ease:'premiumGlide'})
+      /* close upward, power3.inOut 1.25s as in the reference */
+      .to(menu,{clipPath:'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',duration:1.25,ease:'power3.inOut'},'-=0.2');
+  }
+  document.querySelectorAll('[data-menu="open"]').forEach(function(b){b.addEventListener('click',open);});
+  document.querySelectorAll('[data-menu="close"]').forEach(function(b){b.addEventListener('click',close);});
+  addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+
+/* ---- service squares: fromTo scale 0 (reference .service-point-square) ---- */
+function initSvc(){
+  if (reduced) return;
+  document.querySelectorAll('[data-svc-sq]').forEach(function(sq){
+    gsap.fromTo(sq, { scale: 0, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 1, ease: 'natureSway',
+        scrollTrigger: { trigger: sq.parentElement, start: 'top 85%', once: true } });
+  });
+}
+
+/* ---- menu hover image: the reference's Navbar-image-container polygon reveal ---- */
+function initMenuImg(){
+  var box = document.querySelector('.wpt-menu-img');
+  if (!box) return;
+  var imgs = box.querySelectorAll('[data-mimg-el]');
+  var links = document.querySelectorAll('.wpt-menu a[data-mimg]');
+  var openPoly = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  var closedPoly = 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)';
+  links.forEach(function(a){
+    a.addEventListener('mouseenter', function(){
+      var src = a.getAttribute('data-mimg');
+      imgs.forEach(function(im){ im.classList.toggle('is-on', im.getAttribute('src') === src); });
+      if (reduced) { box.style.clipPath = openPoly; return; }
+      gsap.to(box, { clipPath: openPoly, duration: 1.1, ease: 'premiumGlide' });
+    });
+  });
+  var menu = document.querySelector('.wpt-menu');
+  menu.addEventListener('mouseleave', function(){
+    if (reduced) { box.style.clipPath = closedPoly; return; }
+    gsap.to(box, { clipPath: closedPoly, duration: .7, ease: 'premiumGlide' });
+  });
+}
+
+/* ---- SIGNATURE: the focus pull ----
+   The lens finds the subject. Soft -> sharp, with a breath of scale and
+   saturation resolving on the same curve. Hero racks focus on load (the
+   landing moment); every other frame resolves as it enters. */
+function initFocus(){
+  if (reduced) return;
+  var hero = document.querySelector('[data-focus-hero] img');
+  if (hero) {
+    gsap.fromTo(hero, { filter:'blur(26px) saturate(.55)', scale:1.10 },
+      { filter:'blur(0px) saturate(1)', scale:1, duration:2.2, ease:'premiumGlide', delay:.15 });
+  }
+  document.querySelectorAll('.wpt-focus').forEach(function(frame){
+    if (frame.hasAttribute('data-focus-hero')) return;
+    var img = frame.querySelector('img'); if (!img) return;
+    gsap.to(img, {
+      filter:'blur(0px) saturate(1)', scale:1, duration:1.5, ease:'premiumGlide',
+      scrollTrigger:{ trigger: frame, start:'top 88%', once:true }
+    });
+  });
+}
+
+function boot(){ initLines(); initRise(); initPar(); initGround(); initMarks(); initSvc(); initMenuImg(); initFocus(); ScrollTrigger.refresh(); }
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(boot); else boot();
+})();
+</script>
+</body>
+</html>

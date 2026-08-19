@@ -38,8 +38,11 @@
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{background:#141414;color-scheme:dark}
+/* Safari 26 samples fixed edge elements' background-color and falls back to
+   BODY's for the status strip and the band under the URL bar. Both are ink. */
+html,body{background-color:#141414}
 body{background:var(--wpt-ground);color:var(--wpt-paper);font-family:var(--wpt-display);
-  font-weight:300;-webkit-font-smoothing:antialiased;transition:background-color .9s cubic-bezier(.1,.4,.15,1)}
+  font-weight:300;-webkit-font-smoothing:antialiased}
 .wpt-js body.wpt-lock{overflow:hidden}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -71,8 +74,28 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .wpt-cursor[data-on="1"] i{transform:translate(-50%,-50%) scale(1)}
 
 /* ---------- nav (reference: bracketed mono) ---------- */
-.wpt-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;
-  justify-content:space-between;padding:clamp(14px,1.5vw,20px) clamp(20px,3.4vw,54px)}
+/* THE AWNING — first element in flow. A fixed element paints ZERO pixels
+   above the layout viewport, but the iOS status-bar / Dynamic Island strip
+   renders the SCROLLING document, and position:sticky lives in that layer.
+   Stuck at top:-100px it rests inside the strip and keeps it solid ink at
+   every scroll position; at rest it is the headroom that keeps the bar out
+   of the island zone. Permanent, no state. The ground scrubs between
+   section colours behind it, so the awning holds the base ink instead. */
+.wpt-awning{position:sticky;top:-100px;height:106px;flex:none;
+  z-index:999;background:var(--wpt-ink);pointer-events:none}
+
+/* THE CONSTANT BAR. It had no background at all and floated over whatever
+   photograph was under it. Now it is 88% ink glass over blur with a hairline
+   beneath — fixed from first paint, never hides, never reveals, never
+   transforms. No scroll listener, no observer, no opacity gate. */
+.wpt-nav{position:fixed;inset:0 0 auto 0;z-index:1000;display:flex;align-items:center;
+  justify-content:space-between;padding:clamp(14px,1.5vw,20px) clamp(20px,3.4vw,54px);
+  background-color:rgba(20,20,20,.88);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(242,242,242,.12)}
+
+/* content passes under a permanent bar, so anchor jumps must stop short */
+#top,#expeditions,#hornstrandir,#journal,#team,#contact{scroll-margin-top:84px}
 .wpt-nav-mark{font-family:var(--wpt-display);font-weight:300;font-size:clamp(15px,1.35vw,19px);
   letter-spacing:.02em;opacity:.92}
 .wpt-nav-right{display:flex;gap:clamp(14px,2.6vw,44px)}
@@ -277,7 +300,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .wpt-menu-img img.is-on{opacity:1}
 
 /* ---------- portal layer: the page scales away behind the menu (reference .scaling-layer) ---------- */
-.wpt-page{will-change:transform;transform-origin:50% 40%}
+.wpt-page{will-change:transform;transform-origin:50% 40%;
+  background-color:var(--wpt-ground);
+  transition:background-color .9s cubic-bezier(.1,.4,.15,1)}
 
 /* ---------- hero scroll cue ---------- */
 .wpt-cue{font-family:var(--wpt-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8E9482}
@@ -298,6 +323,9 @@ html:not(.wpt-js) [data-rise]{opacity:1;transform:none;filter:none}
 </style>
 </head>
 <body>
+
+<!-- THE AWNING — first element in flow, sticky into the iOS status strip. -->
+<div class="wpt-awning" aria-hidden="true"></div>
 
 <div class="wpt-cursor" data-on="0" aria-hidden="true"><i data-cur-label></i></div>
 
@@ -655,7 +683,10 @@ function initPar(){
 
 /* ---- GROUND SCRUB: the page background shifts per section (reference device) ---- */
 function initGround(){
-  var body = document.body;
+  /* NOT document.body — see the mobile chrome standard. body must keep the
+     page ink so Safari's edge fallback is always ink. */
+  var body = document.querySelector('.wpt-page');
+  if (!body) return;
   document.querySelectorAll('[data-ground]').forEach(function(sec){
     var c = sec.getAttribute('data-ground');
     ScrollTrigger.create({
@@ -693,10 +724,13 @@ function initMarks(){
 /* ---- menu: y30% + blur(8px), premiumGlide (reference values) ---- */
 (function(){
   var menu=document.querySelector('.wpt-menu'), items=document.querySelectorAll('.wpt-menu a');
-  if(!menu) return; var busy=false;
+  if(!menu) return; var busy=false, lockY=0;
   function open(){
     if(busy||menuOpen) return; busy=true; menuOpen=true;
+    lockY = window.scrollY || document.documentElement.scrollTop || 0;
     menu.classList.add('is-open'); document.body.classList.add('wpt-lock'); if(lenis) lenis.stop();
+    var bs = document.body.style;
+    bs.position='fixed'; bs.top=(-lockY)+'px'; bs.left='0'; bs.right='0'; bs.width='100%';
     if(!reduced) gsap.to('.wpt-page',{rotation:10,scale:1.5,y:450,x:300,ease:'power4.inOut',duration:1.25});
     if(reduced){gsap.set(menu,{clipPath:'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)'});gsap.set(items,{y:0,opacity:1,filter:'none'});busy=false;return;}
     gsap.set(items,{y:'30%',opacity:0,filter:'blur(8px)',rotateZ:-5});
@@ -707,7 +741,14 @@ function initMarks(){
   }
   function close(){
     if(busy||!menuOpen) return; busy=true; menuOpen=false;
-    var done=function(){menu.classList.remove('is-open');document.body.classList.remove('wpt-lock');if(lenis)lenis.start();busy=false;};
+    var done=function(){
+      menu.classList.remove('is-open');document.body.classList.remove('wpt-lock');
+      var bs=document.body.style;
+      bs.position='';bs.top='';bs.left='';bs.right='';bs.width='';
+      window.scrollTo(0,lockY);
+      if(lenis){lenis.scrollTo(lockY,{immediate:true});lenis.start();}
+      busy=false;
+    };
     if(!reduced) gsap.to('.wpt-page',{rotation:0,scale:1,y:0,x:0,ease:'power3.inOut',duration:1.25});
     if(reduced){gsap.set(menu,{clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});done();return;}
     gsap.timeline({onComplete:function(){gsap.set(menu,{clipPath:'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)'});done();}})
